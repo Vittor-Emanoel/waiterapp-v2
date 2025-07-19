@@ -2,6 +2,8 @@
 
 Sistema completo de gestão de restaurante com aplicação web, mobile e API robusta para controle de pedidos, usuários e cardápio.
 
+![Logo do WaiterApp](./assets/cover.png)
+
 ## Tecnologias
 
 ### Backend
