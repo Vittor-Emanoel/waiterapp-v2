@@ -11,13 +11,13 @@ import { CreateIngredientController } from "./controllers/ingredients/CreateIngr
 import { DeleteIngredientController } from "./controllers/ingredients/DeleteIngredientController";
 import { ListIngredientsController } from "./controllers/ingredients/ListIngredientsController";
 import { UpdateIngredientController } from "./controllers/ingredients/UpdateIngredientController";
+import { CreateProductController } from "./controllers/products/CreateProductController";
+import { DeleteProductController } from "./controllers/products/DeleteProductController";
+import { ListProductsController } from "./controllers/products/ListProductsController";
+import { UpdateProductController } from "./controllers/products/UpdateProductController";
 import { CreateUserController } from "./controllers/users/CreateUserController";
 import { ListUsersController } from "./controllers/users/ListUsersController";
 import { UpdateUserController } from "./controllers/users/UpdateUserController";
-import { createProduct } from "./http/controllers/product/create-product";
-import { deleteProduct } from "./http/controllers/product/delete-product";
-import { listProducts } from "./http/controllers/product/list-product";
-import { updateProduct } from "./http/controllers/product/update-product";
 import { authMiddleware } from "./middlewares/authMiddleware";
 
 export async function publicRoutes(fastify: FastifyInstance) {
@@ -49,8 +49,8 @@ export async function privateRoutes(fastify: FastifyInstance) {
   );
 
   //##region products
-  fastify.get("/products", listProducts);
-  fastify.post("/products", createProduct);
-  fastify.put("/products/:productId", updateProduct);
-  fastify.delete("/products/:productId", deleteProduct);
+  fastify.get("/products", ListProductsController.handler);
+  fastify.post("/products", CreateProductController.handler);
+  fastify.put("/products/:productId", UpdateProductController.handler);
+  fastify.delete("/products/:productId", DeleteProductController.handler);
 }
