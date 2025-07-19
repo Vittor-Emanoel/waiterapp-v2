@@ -30,4 +30,8 @@ export class PrismaUsersRepository implements IUsersRepository {
 
 		return user;
 	}
+  async update(data: Prisma.UserUpdateArgs): Promise<User> {
+    const user = await prisma.user.update(data)
+    return user
+  }
 }

@@ -1,19 +1,19 @@
 import { UserAlreadyExistsError } from "@/errors/UserAlreadyExistsError";
-import { JwtService } from "@/services/JwtService";
 import { makeRegisterUseCase } from "@/useCases/factories/auth/makeRegisterUseCase";
+import { UserType } from "@prisma/client";
 
-import { fastify, type FastifyReply, type FastifyRequest } from "fastify";
+import { type FastifyReply, type FastifyRequest } from "fastify";
 import { z } from "zod";
 
-export async function signup(request: FastifyRequest, reply: FastifyReply) {
-  const registerBodySchema = z.object({
+export async function updateUser(request: FastifyRequest, reply: FastifyReply) {
+  const updateUserBodySchema = z.object({
     name: z.string().min(3),
     email: z.string().email(),
     password: z.string().min(8),
-    // role: z.nativeEnum(UserType).default(UserType.WAITER),
+    role: z.nativeEnum(UserType).default(UserType.WAITER),
   });
 
-  const { name, email, password } = registerBodySchema.parse(request.body);
+  const { name, email, password, role } = updateUserBodySchema.parse(request.body);
   const registerUseCase = makeRegisterUseCase();
 
   try {
@@ -21,7 +21,7 @@ export async function signup(request: FastifyRequest, reply: FastifyReply) {
       email,
       name,
       password,
-      role: "ADMIN",
+      role,
     });
 
     const accessToken = await reply.jwtSign({ sub: user.id, role: user.type });

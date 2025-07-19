@@ -1,4 +1,5 @@
 import { PrismaUsersRepository } from "@/repositories/prisma/prisma-users-repository";
+import { AuthenticateUseCase } from "@/useCases/auth/authenticate";
 import { RegisterUseCase } from "@/useCases/auth/register";
 
 export function makeRegisterUseCase() {
@@ -7,3 +8,11 @@ export function makeRegisterUseCase() {
 
 	return registerUseCase;
 }
+
+export function makeAuthenticateUseCase() {
+  const usersRepository = new PrismaUsersRepository();
+  const authenticateUseCase = new AuthenticateUseCase(usersRepository);
+
+  return authenticateUseCase;
+}
+

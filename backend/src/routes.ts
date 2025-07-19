@@ -1,7 +1,7 @@
 import { type FastifyInstance } from "fastify";
 
-import { signin } from "./http/controllers/auth/signin";
-import { signup } from "./http/controllers/auth/signup";
+import { SignInController } from "./controllers/auth/SignInController";
+import { SignUpController } from "./controllers/auth/SignUpController";
 import { createCategory } from "./http/controllers/category/create-category";
 import { deleteOneCategory } from "./http/controllers/category/delete-one-category";
 import { listCategory } from "./http/controllers/category/list-category";
@@ -17,8 +17,8 @@ import { updateProduct } from "./http/controllers/product/update-product";
 import { authMiddleware } from "./middlewares/authMiddleware";
 
 export async function publicRoutes(fastify: FastifyInstance) {
-  fastify.post("/signup", signup);
-  fastify.post("/signin", signin);
+  fastify.post("/signup", SignUpController.handler);
+  fastify.post("/signin", SignInController.handler);
 }
 
 export async function privateRoutes(fastify: FastifyInstance) {
