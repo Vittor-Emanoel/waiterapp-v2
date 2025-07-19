@@ -62,14 +62,13 @@ erDiagram
     User ||--o{ Order : creates
     Category ||--o{ Product : contains
     Product }o--o{ Ingredient : has
-    Order }o--|| Product : includes
 
     User {
         string id PK
         string name
         string email UK
         string password
-        UserType type
+        string type
         datetime created_at
     }
 
@@ -99,19 +98,8 @@ erDiagram
     Order {
         string id PK
         int table
-        OrderStatus status
+        string status
         int quantity
-    }
-
-    UserType {
-        WAITER
-        ADMIN
-    }
-
-    OrderStatus {
-        WAITING
-        IN_PRODUCTION
-        DONE
     }
 ```
 
