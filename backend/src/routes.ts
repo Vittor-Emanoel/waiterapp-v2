@@ -7,13 +7,13 @@ import { ListCategoriesController } from "./controllers/categories/ListCategorie
 import { UpdateCategoryController } from "./controllers/categories/UpdateCategoryController";
 
 import { DeleteCategoryController } from "./controllers/categories/DeleteCategoryController";
+import { CreateIngredientController } from "./controllers/ingredients/CreateIngredientController";
+import { DeleteIngredientController } from "./controllers/ingredients/DeleteIngredientController";
+import { ListIngredientsController } from "./controllers/ingredients/ListIngredientsController";
+import { UpdateIngredientController } from "./controllers/ingredients/UpdateIngredientController";
 import { CreateUserController } from "./controllers/users/CreateUserController";
 import { ListUsersController } from "./controllers/users/ListUsersController";
 import { UpdateUserController } from "./controllers/users/UpdateUserController";
-import { createIngredient } from "./http/controllers/ingredient/create-ingredient";
-import { deleteOneIngredient } from "./http/controllers/ingredient/delete-one-ingredient";
-import { listIngredient } from "./http/controllers/ingredient/list-ingredient";
-import { updateIngredient } from "./http/controllers/ingredient/update-ingredient";
 import { createProduct } from "./http/controllers/product/create-product";
 import { deleteProduct } from "./http/controllers/product/delete-product";
 import { listProducts } from "./http/controllers/product/list-product";
@@ -40,10 +40,13 @@ export async function privateRoutes(fastify: FastifyInstance) {
   fastify.delete("/categories/:categoryId", DeleteCategoryController.handler);
 
   //##region ingredients
-  fastify.get("/ingredients", listIngredient);
-  fastify.post("/ingredients", createIngredient);
-  fastify.put("/ingredients/:ingredientId", updateIngredient);
-  fastify.delete("/ingredients/:ingredientId", deleteOneIngredient);
+  fastify.get("/ingredients", ListIngredientsController.handler);
+  fastify.post("/ingredients", CreateIngredientController.handler);
+  fastify.put("/ingredients/:ingredientId", UpdateIngredientController.handler);
+  fastify.delete(
+    "/ingredients/:ingredientId",
+    DeleteIngredientController.handler,
+  );
 
   //##region products
   fastify.get("/products", listProducts);
