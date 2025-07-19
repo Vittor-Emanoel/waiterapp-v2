@@ -1,4 +1,3 @@
-
 import { EmailAlreadyInUseError } from "@/errors/application/EmailAlreadyInUse";
 import { UserNotFoundError } from "@/errors/UserNotFoundError";
 import type { IUsersRepository } from "@/repositories/IUsersRepository";
@@ -22,25 +21,20 @@ export class UpdateUserUseCase {
       throw new UserNotFoundError();
     }
 
-    if (email && email !== user.email) {
+    if (email !== user.email) {
       const emailTaken = await this.usersRepository.findByEmail(email);
       if (emailTaken) {
         throw new EmailAlreadyInUseError();
       }
     }
 
-    const updatedUser = await this.usersRepository.update({
-      where: {
-        id: id,
-      },
-      data: {
-        name,
-        email,
-        password: password ? await hash(password, 12) : undefined,
-        type: role,
-      },
-    });
+    const hashedPassword = await hash(password, 12);
 
-    return { user: updatedUser };
+    await this.usersRepository.update(id, {
+      name,
+      email,
+      password: hashedPassword,
+      type: role,
+    });
   }
 }

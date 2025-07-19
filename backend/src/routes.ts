@@ -5,7 +5,11 @@ import { SignUpController } from "./controllers/auth/SignUpController";
 import { CreateCategoryController } from "./controllers/categories/CreateCategoryController";
 import { ListCategoriesController } from "./controllers/categories/ListCategoriesController";
 import { UpdateCategoryController } from "./controllers/categories/UpdateCategoryController";
-import { deleteOneCategory } from "./http/controllers/category/delete-one-category";
+
+import { DeleteCategoryController } from "./controllers/categories/DeleteCategoryController";
+import { CreateUserController } from "./controllers/users/CreateUserController";
+import { ListUsersController } from "./controllers/users/ListUsersController";
+import { UpdateUserController } from "./controllers/users/UpdateUserController";
 import { createIngredient } from "./http/controllers/ingredient/create-ingredient";
 import { deleteOneIngredient } from "./http/controllers/ingredient/delete-one-ingredient";
 import { listIngredient } from "./http/controllers/ingredient/list-ingredient";
@@ -24,11 +28,16 @@ export async function publicRoutes(fastify: FastifyInstance) {
 export async function privateRoutes(fastify: FastifyInstance) {
   fastify.addHook("onRequest", authMiddleware);
 
+  fastify.post("/users", CreateUserController.handler);
+  fastify.get("/users", ListUsersController.handler);
+  fastify.put("/users/:userId", UpdateUserController.handler);
+  fastify.delete("/users/:userId", CreateUserController.handler);
+
   //##region categories
   fastify.get("/categories", ListCategoriesController.handler);
   fastify.post("/categories", CreateCategoryController.handler);
   fastify.put("/categories/:categoryId", UpdateCategoryController.handler);
-  fastify.delete("/categories/:categoryId", deleteOneCategory);
+  fastify.delete("/categories/:categoryId", DeleteCategoryController.handler);
 
   //##region ingredients
   fastify.get("/ingredients", listIngredient);
