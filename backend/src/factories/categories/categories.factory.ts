@@ -1,8 +1,8 @@
 import { PrismaCategoriesRepository } from "@/repositories/prisma/prisma-categories-repository";
-import { CreateCategoryUseCase } from "@/useCases/category/create-category";
-import { DeleteCategoryUseCase } from "@/useCases/category/delete-one";
-import { ListCategoryUseCase } from "@/useCases/category/list-category";
-import { UpdateCategoryUseCase } from "@/useCases/category/update-category";
+import { CreateCategoryUseCase } from "@/useCases/categories/CreateCategoryUseCase";
+import { DeleteCategoryUseCase } from "@/useCases/categories/DeleteCategoryUseCase";
+import { ListCategoryUseCase } from "@/useCases/categories/ListCategoryUseCase";
+import { UpdateCategoryUseCase } from "@/useCases/categories/UpdateCategoryUseCase";
 
 export function makeCreateCategoryUseCase() {
   const categoriesRepository = new PrismaCategoriesRepository();
@@ -13,9 +13,7 @@ export function makeCreateCategoryUseCase() {
 
 export function makeDeleteCategoryUseCase() {
   const categoryRepository = new PrismaCategoriesRepository();
-  const deleteCategoryUseCase = new DeleteCategoryUseCase(
-    categoryRepository,
-  );
+  const deleteCategoryUseCase = new DeleteCategoryUseCase(categoryRepository);
 
   return deleteCategoryUseCase;
 }
@@ -29,9 +27,7 @@ export function makeListCategoriesUseCase() {
 
 export function makeUpdateCategoryUseCase() {
   const categoryRepository = new PrismaCategoriesRepository();
-  const updateCategoryUseCase = new UpdateCategoryUseCase(
-    categoryRepository,
-  );
+  const updateCategoryUseCase = new UpdateCategoryUseCase(categoryRepository);
 
   return updateCategoryUseCase;
 }

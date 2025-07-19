@@ -1,4 +1,4 @@
-import { makeDeleteProductsUseCase } from "@/useCases/factories/product/makeDeleteProductUseCase";
+import { makeDeleteProductsUseCase } from "@/factories/products/makeDeleteProductUseCase";
 import type { FastifyReply, FastifyRequest } from "fastify";
 
 export class DeleteProductController {

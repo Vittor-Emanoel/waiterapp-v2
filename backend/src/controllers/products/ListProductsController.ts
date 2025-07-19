@@ -1,4 +1,4 @@
-import { makeListProductsUseCase } from "@/useCases/factories/product/makeListProductsUseCase";
+import { makeListProductsUseCase } from "@/factories/products/makeListProductsUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 export class ListProductsController {

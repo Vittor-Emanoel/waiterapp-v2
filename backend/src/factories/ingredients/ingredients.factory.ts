@@ -1,8 +1,8 @@
 import { PrismaIngredientsRepository } from "@/repositories/prisma/prisma-ingredients-repository";
-import { CreateIngredientsUseCase } from "@/useCases/ingredient/create-category";
-import { DeleteOneIngredientsUseCase } from "@/useCases/ingredient/delete-one";
-import { ListIngredientsUseCase } from "@/useCases/ingredient/list-category";
-import { UpdateIngredientsUseCase } from "@/useCases/ingredient/update-category";
+import { CreateIngredientsUseCase } from "@/useCases/ingredients/CreateIngredientUseCase";
+import { DeleteIngredientUseCase } from "@/useCases/ingredients/DeleteIngredientUseCase";
+import { ListIngredientsUseCase } from "@/useCases/ingredients/ListIngredientsUseCase";
+import { UpdateIngredientsUseCase } from "@/useCases/ingredients/UpdateIngredientUseCase";
 
 export function makeCreateIngredientUseCase() {
   const ingredientRepository = new PrismaIngredientsRepository();
@@ -13,7 +13,7 @@ export function makeCreateIngredientUseCase() {
 
 export function makeDeleteIngredientUseCase() {
   const ingredientRepository = new PrismaIngredientsRepository();
-  const deleteIngredientUseCase = new DeleteOneIngredientsUseCase(
+  const deleteIngredientUseCase = new DeleteIngredientUseCase(
     ingredientRepository,
   );
 

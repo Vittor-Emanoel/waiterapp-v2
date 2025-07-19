@@ -12,10 +12,14 @@ export interface ICreateProductRequest {
   ingredientIds: string[];
 }
 
+/**
+ * Refactor!
+ */
 export class CreateProductUseCase {
-  constructor(private productsRepository: IProductsRepository,
+  constructor(
+    private productsRepository: IProductsRepository,
     private categoriesRepository: ICategoriesRepository,
-    private ingredientsRepository: IIngredientsRepository
+    private ingredientsRepository: IIngredientsRepository,
   ) {}
 
   async execute({
@@ -26,28 +30,24 @@ export class CreateProductUseCase {
     categoryId,
     ingredientIds,
   }: ICreateProductRequest): Promise<{ product: Product }> {
-
     const existing = await this.productsRepository.findByName(name);
     if (existing) {
       throw new Error("Product already exists");
     }
 
-    // Verificar se a categoria existe
     const categoryExists = await this.categoriesRepository.findById(categoryId);
+
     if (!categoryExists) {
       throw new Error("Category not found");
     }
-
-    // Verificar se todos os ingredientes existem
     if (ingredientIds.length > 0) {
-      const existingIngredients = await this.ingredientsRepository.findByIds(ingredientIds);
+      const existingIngredients =
+        await this.ingredientsRepository.findByIds(ingredientIds);
 
       if (existingIngredients.length !== ingredientIds.length) {
         throw new Error("One or more ingredients not found");
       }
     }
-
-
 
     const product = await this.productsRepository.create({
       name,
@@ -57,13 +57,12 @@ export class CreateProductUseCase {
       category: {
         connect: {
           id: categoryId,
-        }
+        },
       },
       ingredients: {
-        connect: ingredientIds.map((id) => ({ id }))
-      }
+        connect: ingredientIds.map((id) => ({ id })),
+      },
     });
-
 
     return { product };
   }

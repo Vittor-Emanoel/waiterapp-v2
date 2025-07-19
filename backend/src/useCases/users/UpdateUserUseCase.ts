@@ -1,6 +1,7 @@
 import { EmailAlreadyInUseError } from "@/errors/application/EmailAlreadyInUse";
 import { UserNotFoundError } from "@/errors/UserNotFoundError";
 import type { IUsersRepository } from "@/repositories/IUsersRepository";
+import { Prisma } from "@prisma/client";
 import { hash } from "bcryptjs";
 
 export interface IUpdateUserRequest {
@@ -15,26 +16,28 @@ export class UpdateUserUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
   async execute({ id, name, email, password, role }: IUpdateUserRequest) {
-    const user = await this.usersRepository.findById(id);
+    try {
+      const user = await this.usersRepository.findById(id);
 
-    if (!user) {
-      throw new UserNotFoundError();
-    }
-
-    if (email !== user.email) {
-      const emailTaken = await this.usersRepository.findByEmail(email);
-      if (emailTaken) {
+      if (email !== user?.email) {
         throw new EmailAlreadyInUseError();
       }
+
+      const hashedPassword = await hash(password, 12);
+
+      await this.usersRepository.update(id, {
+        name,
+        email,
+        password: hashedPassword,
+        type: role,
+      });
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        throw new UserNotFoundError();
+      }
     }
-
-    const hashedPassword = await hash(password, 12);
-
-    await this.usersRepository.update(id, {
-      name,
-      email,
-      password: hashedPassword,
-      type: role,
-    });
   }
 }

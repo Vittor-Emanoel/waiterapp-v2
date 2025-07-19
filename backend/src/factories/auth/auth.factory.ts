@@ -1,12 +1,12 @@
 import { PrismaUsersRepository } from "@/repositories/prisma/prisma-users-repository";
-import { AuthenticateUseCase } from "@/useCases/auth/authenticate";
-import { RegisterUseCase } from "@/useCases/auth/register";
+import { AuthenticateUseCase } from "@/useCases/auth/AuthenticateUseCase";
+import { RegisterUserUseCase } from "@/useCases/auth/RegisterUserUseCase";
 
 export function makeRegisterUseCase() {
-	const usersRepository = new PrismaUsersRepository();
-	const registerUseCase = new RegisterUseCase(usersRepository);
+  const usersRepository = new PrismaUsersRepository();
+  const registerUseCase = new RegisterUserUseCase(usersRepository);
 
-	return registerUseCase;
+  return registerUseCase;
 }
 
 export function makeAuthenticateUseCase() {
@@ -15,4 +15,3 @@ export function makeAuthenticateUseCase() {
 
   return authenticateUseCase;
 }
-

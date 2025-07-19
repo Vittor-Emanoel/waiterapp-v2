@@ -1,13 +1,13 @@
 import { UserNotFoundError } from "@/errors/UserNotFoundError";
-import type { IUsersRepository } from "@/repositories/IUsersRepository";
+import { IUsersRepository } from "@/repositories/IUsersRepository";
 import { Prisma } from "@prisma/client";
 
 export class DeleteUserUseCase {
-  constructor(private userRepository: IUsersRepository) {}
+  constructor(private usersRepository: IUsersRepository) {}
 
   async execute(userId: string) {
     try {
-      await this.userRepository.delete(userId);
+      await this.usersRepository.delete(userId);
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -15,8 +15,6 @@ export class DeleteUserUseCase {
       ) {
         throw new UserNotFoundError();
       }
-
-      throw error;
     }
   }
 }

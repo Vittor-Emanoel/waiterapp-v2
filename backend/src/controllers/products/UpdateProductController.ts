@@ -1,4 +1,4 @@
-import { makeUpdateProductsUseCase } from "@/useCases/factories/product/makeUpdateProductsUseCase";
+import { makeUpdateProductUseCase } from "@/factories/products/makeUpdateProductUseCase";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
@@ -24,7 +24,7 @@ export class UpdateProductController {
     const { name, description, imageUrl, price, categoryId, ingredientIds } =
       schema.parse(request.body);
 
-    const updateProductUseCase = makeUpdateProductsUseCase();
+    const updateProductUseCase = makeUpdateProductUseCase();
 
     try {
       const { product } = await updateProductUseCase.execute({
