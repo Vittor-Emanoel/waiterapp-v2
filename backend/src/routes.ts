@@ -2,10 +2,10 @@ import { type FastifyInstance } from "fastify";
 
 import { SignInController } from "./controllers/auth/SignInController";
 import { SignUpController } from "./controllers/auth/SignUpController";
-import { createCategory } from "./http/controllers/category/create-category";
+import { CreateCategoryController } from "./controllers/categories/CreateCategoryController";
+import { ListCategoriesController } from "./controllers/categories/ListCategoriesController";
+import { UpdateCategoryController } from "./controllers/categories/UpdateCategoryController";
 import { deleteOneCategory } from "./http/controllers/category/delete-one-category";
-import { listCategory } from "./http/controllers/category/list-category";
-import { updateCategory } from "./http/controllers/category/update-category";
 import { createIngredient } from "./http/controllers/ingredient/create-ingredient";
 import { deleteOneIngredient } from "./http/controllers/ingredient/delete-one-ingredient";
 import { listIngredient } from "./http/controllers/ingredient/list-ingredient";
@@ -25,9 +25,9 @@ export async function privateRoutes(fastify: FastifyInstance) {
   fastify.addHook("onRequest", authMiddleware);
 
   //##region categories
-  fastify.get("/categories", listCategory);
-  fastify.post("/categories", createCategory);
-  fastify.put("/categories/:categoryId", updateCategory);
+  fastify.get("/categories", ListCategoriesController.handler);
+  fastify.post("/categories", CreateCategoryController.handler);
+  fastify.put("/categories/:categoryId", UpdateCategoryController.handler);
   fastify.delete("/categories/:categoryId", deleteOneCategory);
 
   //##region ingredients

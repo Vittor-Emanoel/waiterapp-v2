@@ -1,4 +1,4 @@
-import { InvalidCredentialError } from "@/errors/InvalidCredentialError";
+import { InvalidCredentialError } from "@/errors/application/InvalidCredentials";
 import { UserNotFoundError } from "@/errors/UserNotFoundError";
 import type { IUsersRepository } from "@/repositories/IUsersRepository";
 import type { User } from "@prisma/client";

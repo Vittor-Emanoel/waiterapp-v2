@@ -1,4 +1,5 @@
-import { UserAlreadyExistsError } from "@/errors/UserAlreadyExistsError";
+
+import { EmailAlreadyInUseError } from "@/errors/application/EmailAlreadyInUse";
 import { UserNotFoundError } from "@/errors/UserNotFoundError";
 import type { IUsersRepository } from "@/repositories/IUsersRepository";
 import { hash } from "bcryptjs";
@@ -24,7 +25,7 @@ export class UpdateUserUseCase {
     if (email && email !== user.email) {
       const emailTaken = await this.usersRepository.findByEmail(email);
       if (emailTaken) {
-        throw new UserAlreadyExistsError();
+        throw new EmailAlreadyInUseError();
       }
     }
 

@@ -1,4 +1,4 @@
-import { UserAlreadyExistsError } from "@/errors/UserAlreadyExistsError";
+
 import { makeAuthenticateUseCase } from "@/factories/auth/auth.factory";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
@@ -27,11 +27,7 @@ export class SignInController {
 
       return reply.status(201).send({ accessToken });
     } catch (error) {
-      if (error instanceof UserAlreadyExistsError) {
-        return reply.status(409).send({ message: error.message });
-      }
-
-      throw new Error('Internal Server error');
+      throw error;
     }
   }
 }

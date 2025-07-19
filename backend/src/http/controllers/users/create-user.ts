@@ -1,5 +1,5 @@
-import { UserAlreadyExistsError } from "@/errors/UserAlreadyExistsError";
-import { makeRegisterUseCase } from "@/useCases/factories/auth/makeRegisterUseCase";
+import { EmailAlreadyInUseError } from "@/errors/application/EmailAlreadyInUse";
+import { makeRegisterUseCase } from "@/factories/auth/auth.factory";
 import { UserType } from "@prisma/client";
 
 import { type FastifyReply, type FastifyRequest } from "fastify";
@@ -28,8 +28,12 @@ export async function createUser(request: FastifyRequest, reply: FastifyReply) {
 
     return reply.status(201).send({ accessToken });
   } catch (error) {
-    if (error instanceof UserAlreadyExistsError) {
-      return reply.status(409).send({ message: error.message });
+    if (error instanceof EmailAlreadyInUseError) {
+      return reply.status(409).send({
+        code: error.code,
+        message: error.message,
+        statusCode: error.statusCode ?? 400,
+      });
     }
 
     throw error;

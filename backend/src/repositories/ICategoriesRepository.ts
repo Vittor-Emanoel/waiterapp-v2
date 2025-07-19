@@ -5,6 +5,6 @@ export interface ICategoriesRepository {
 	findByName(name: string): Promise<Category | null>;
 	getAll(): Promise<Category[]>;
 	update(categoryId: string, data: Prisma.CategoryUpdateInput): Promise<void>;
-	deleteOne(categoryId: string): Promise<void>;
+	delete(categoryId: string): Promise<void>;
   findById(id: string): Promise<Category | null>;
 }
