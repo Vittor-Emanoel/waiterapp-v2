@@ -11,6 +11,7 @@ import { CreateIngredientController } from "./controllers/ingredients/CreateIngr
 import { DeleteIngredientController } from "./controllers/ingredients/DeleteIngredientController";
 import { ListIngredientsController } from "./controllers/ingredients/ListIngredientsController";
 import { UpdateIngredientController } from "./controllers/ingredients/UpdateIngredientController";
+import { CreateOrderController } from "./controllers/orders/CreateOrderController";
 import { CreateProductController } from "./controllers/products/CreateProductController";
 import { DeleteProductController } from "./controllers/products/DeleteProductController";
 import { ListProductsController } from "./controllers/products/ListProductsController";
@@ -18,7 +19,7 @@ import { UpdateProductController } from "./controllers/products/UpdateProductCon
 import { CreateUserController } from "./controllers/users/CreateUserController";
 import { ListUsersController } from "./controllers/users/ListUsersController";
 import { UpdateUserController } from "./controllers/users/UpdateUserController";
-import { authMiddleware } from "./middlewares/authMiddleware";
+import { AuthMiddleware } from "./middlewares/authMiddleware";
 
 export async function publicRoutes(fastify: FastifyInstance) {
   fastify.post("/signup", SignUpController.handler);
@@ -26,31 +27,38 @@ export async function publicRoutes(fastify: FastifyInstance) {
 }
 
 export async function privateRoutes(fastify: FastifyInstance) {
-  fastify.addHook("onRequest", authMiddleware);
+  fastify.addHook("onRequest", AuthMiddleware);
 
   fastify.post("/users", CreateUserController.handler);
   fastify.get("/users", ListUsersController.handler);
   fastify.put("/users/:userId", UpdateUserController.handler);
   fastify.delete("/users/:userId", CreateUserController.handler);
 
-  //##region categories
+  //## region categories
   fastify.get("/categories", ListCategoriesController.handler);
   fastify.post("/categories", CreateCategoryController.handler);
   fastify.put("/categories/:categoryId", UpdateCategoryController.handler);
   fastify.delete("/categories/:categoryId", DeleteCategoryController.handler);
+  //#endregion
 
-  //##region ingredients
+  //## region ingredients
   fastify.get("/ingredients", ListIngredientsController.handler);
   fastify.post("/ingredients", CreateIngredientController.handler);
   fastify.put("/ingredients/:ingredientId", UpdateIngredientController.handler);
   fastify.delete(
     "/ingredients/:ingredientId",
-    DeleteIngredientController.handler,
+    DeleteIngredientController.handler
   );
+  //#endregion
 
-  //##region products
+  //## region products
   fastify.get("/products", ListProductsController.handler);
   fastify.post("/products", CreateProductController.handler);
   fastify.put("/products/:productId", UpdateProductController.handler);
   fastify.delete("/products/:productId", DeleteProductController.handler);
+  //#endregion
+
+  //## region orders
+  fastify.post("/orders", CreateOrderController.handler);
+  //#endregion
 }
