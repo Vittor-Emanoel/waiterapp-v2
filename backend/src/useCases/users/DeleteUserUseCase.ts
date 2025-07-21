@@ -1,4 +1,4 @@
-import { UserNotFoundError } from "@/errors/UserNotFoundError";
+import { UserNotFoundError } from "@/errors/application/UserNotFound";
 import { IUsersRepository } from "@/repositories/IUsersRepository";
 import { Prisma } from "@prisma/client";
 

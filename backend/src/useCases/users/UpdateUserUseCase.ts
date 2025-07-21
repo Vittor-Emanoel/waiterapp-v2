@@ -1,5 +1,5 @@
 import { EmailAlreadyInUseError } from "@/errors/application/EmailAlreadyInUse";
-import { UserNotFoundError } from "@/errors/UserNotFoundError";
+import { UserNotFoundError } from "@/errors/application/UserNotFound";
 import type { IUsersRepository } from "@/repositories/IUsersRepository";
 import { Prisma } from "@prisma/client";
 import { hash } from "bcryptjs";
