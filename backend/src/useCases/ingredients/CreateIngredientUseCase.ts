@@ -8,8 +8,9 @@ export interface ICreateCategoryRequest {
 export class CreateIngredientsUseCase {
   constructor(private ingredientsRepository: IIngredientsRepository) {}
   async execute({ name, emoji }: ICreateCategoryRequest) {
-    const ingredientAlreadyExists =
-      await this.ingredientsRepository.findByName(name);
+    const ingredientAlreadyExists = await this.ingredientsRepository.findByName(
+      name
+    );
 
     if (ingredientAlreadyExists) {
       throw new Error("Ingredient already exists");

@@ -58,6 +58,7 @@ model Product {
   category   Category @relation(fields: [categoryId], references: [id])
 
   ingredients Ingredient[]
+  orderItems  OrderProducts[]
 
   @@map("products")
 }
@@ -71,10 +72,23 @@ enum OrderStatus {
 }
 
 model Order {
-  id       String      @id @default(uuid())
-  table    Int
-  status   OrderStatus @default(IN_PRODUCTION)
-  quantity Int
+  id        String          @id @default(uuid())
+  table     Int
+  status    OrderStatus     @default(WAITING)
+  createdAt DateTime        @default(now()) @map("created_at")
+  products  OrderProducts[]
 
   @@map("orders")
+}
+
+model OrderProducts {
+  id        String @id @default(uuid())
+  orderId   String @map("order_id")
+  productId String @map("product_id")
+  quantity  Int
+
+  Order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("order_products")
 }
