@@ -11,4 +11,5 @@ export interface CreateOrderDTO {
 
 export interface IOrdersRepository {
   create(data: CreateOrderDTO): Promise<Order>;
+  getAll(): Promise<Order[]>;
 }
