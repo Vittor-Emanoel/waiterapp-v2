@@ -1,4 +1,4 @@
-import { Order } from "@prisma/client";
+import { Order, OrderStatus } from "@prisma/client";
 
 //refatorar!
 export interface CreateOrderDTO {
@@ -12,4 +12,5 @@ export interface CreateOrderDTO {
 export interface IOrdersRepository {
   create(data: CreateOrderDTO): Promise<Order>;
   getAll(): Promise<Order[]>;
+  updateStatus(orderId: string, status: OrderStatus): Promise<Order>;
 }

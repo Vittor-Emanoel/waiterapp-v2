@@ -7,10 +7,10 @@ export interface IUpdateIngredientRequest {
 }
 
 export class UpdateIngredientsUseCase {
-  constructor(private ingredientsRepository: IIngredientsRepository) {}
+  constructor(private readonly ingredientsRepository: IIngredientsRepository) {}
   async execute(
     ingredientId: string,
-    { name, emoji }: IUpdateIngredientRequest,
+    { name, emoji }: IUpdateIngredientRequest
   ) {
     try {
       const ingredient = await this.ingredientsRepository.update(ingredientId, {

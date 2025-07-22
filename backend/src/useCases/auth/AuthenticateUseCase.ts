@@ -15,7 +15,7 @@ interface IAuthenticateUseCaseResponse {
 }
 
 export class AuthenticateUseCase {
-  constructor(private authRepository: IUsersRepository) {}
+  constructor(private readonly authRepository: IUsersRepository) {}
 
   async execute({
     email,

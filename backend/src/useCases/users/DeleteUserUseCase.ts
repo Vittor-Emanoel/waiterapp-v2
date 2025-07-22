@@ -3,7 +3,7 @@ import { IUsersRepository } from "@/repositories/IUsersRepository";
 import { Prisma } from "@prisma/client";
 
 export class DeleteUserUseCase {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(private readonly usersRepository: IUsersRepository) {}
 
   async execute(userId: string) {
     try {

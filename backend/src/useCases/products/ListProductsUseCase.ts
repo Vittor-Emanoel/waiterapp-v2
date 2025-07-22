@@ -1,7 +1,7 @@
 import { IProductsRepository } from "@/repositories/IProductsRepository";
 
 export class ListProductsUseCase {
-  constructor(private productsRepository: IProductsRepository) {}
+  constructor(private readonly productsRepository: IProductsRepository) {}
   async execute() {
     const products = await this.productsRepository.getAll();
 

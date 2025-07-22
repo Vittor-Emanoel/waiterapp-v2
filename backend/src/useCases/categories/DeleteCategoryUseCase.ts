@@ -3,7 +3,7 @@ import type { ICategoriesRepository } from "@/repositories/ICategoriesRepository
 import { Prisma } from "@prisma/client";
 
 export class DeleteCategoryUseCase {
-  constructor(private categoryRepository: ICategoriesRepository) {}
+  constructor(private readonly categoryRepository: ICategoriesRepository) {}
   async execute(categoryId: string) {
     try {
       const category = await this.categoryRepository.delete(categoryId);

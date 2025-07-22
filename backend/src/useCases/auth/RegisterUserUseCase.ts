@@ -10,7 +10,7 @@ export interface IRegisterRequest {
 }
 
 export class RegisterUserUseCase {
-  constructor(private authRepository: IUsersRepository) {}
+  constructor(private readonly authRepository: IUsersRepository) {}
 
   async execute({ name, email, password, role }: IRegisterRequest) {
     const emailTaken = await this.authRepository.findByEmail(email);

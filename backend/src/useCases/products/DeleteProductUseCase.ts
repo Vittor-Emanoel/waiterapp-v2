@@ -6,7 +6,7 @@ export interface IDeleteProductRequest {
 }
 
 export class DeleteProductUseCase {
-  constructor(private productsRepository: IProductsRepository) {}
+  constructor(private readonly productsRepository: IProductsRepository) {}
 
   async execute({ productId }: IDeleteProductRequest): Promise<void> {
     try {

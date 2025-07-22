@@ -13,7 +13,7 @@ export interface IUpdateUserRequest {
 }
 
 export class UpdateUserUseCase {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(private readonly usersRepository: IUsersRepository) {}
 
   async execute({ id, name, email, password, role }: IUpdateUserRequest) {
     try {

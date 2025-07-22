@@ -17,9 +17,9 @@ export interface ICreateProductRequest {
  */
 export class CreateProductUseCase {
   constructor(
-    private productsRepository: IProductsRepository,
-    private categoriesRepository: ICategoriesRepository,
-    private ingredientsRepository: IIngredientsRepository,
+    private readonly productsRepository: IProductsRepository,
+    private readonly categoriesRepository: ICategoriesRepository,
+    private readonly ingredientsRepository: IIngredientsRepository
   ) {}
 
   async execute({
@@ -41,8 +41,9 @@ export class CreateProductUseCase {
       throw new Error("Category not found");
     }
     if (ingredientIds.length > 0) {
-      const existingIngredients =
-        await this.ingredientsRepository.findByIds(ingredientIds);
+      const existingIngredients = await this.ingredientsRepository.findByIds(
+        ingredientIds
+      );
 
       if (existingIngredients.length !== ingredientIds.length) {
         throw new Error("One or more ingredients not found");

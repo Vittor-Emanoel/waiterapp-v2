@@ -15,9 +15,9 @@ export interface IUpdateProductRequest {
 
 export class UpdateProductUseCase {
   constructor(
-    private productsRepository: IProductsRepository,
-    private categoriesRepository: ICategoriesRepository,
-    private ingredientsRepository: IIngredientsRepository,
+    private readonly productsRepository: IProductsRepository,
+    private readonly categoriesRepository: ICategoriesRepository,
+    private readonly ingredientsRepository: IIngredientsRepository
   ) {}
 
   async execute({

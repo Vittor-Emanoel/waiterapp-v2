@@ -2,7 +2,7 @@ import type { IIngredientsRepository } from "@/repositories/IIngredientsReposito
 import { Prisma } from "@prisma/client";
 
 export class DeleteIngredientUseCase {
-  constructor(private ingredientsRepository: IIngredientsRepository) {}
+  constructor(private readonly ingredientsRepository: IIngredientsRepository) {}
   async execute(ingredientId: string) {
     try {
       const ingredient = await this.ingredientsRepository.delete(ingredientId);

@@ -1,17 +1,49 @@
 import { prisma } from "@/lib/prisma";
-import { Order, OrderProducts } from "@prisma/client";
-import { CreateOrderDTO, IOrdersRepository } from "../IOrdersRepository";
+import { Order, OrderStatus } from "@prisma/client";
+import { IOrdersRepository } from "../IOrdersRepository";
 
-type OrderWithProducts = Order & {
-  products: OrderProducts[];
-};
+export interface CreateOrderDTO {
+  table: number;
+  products: {
+    productId: string;
+    quantity: number;
+  }[];
+}
+
+// Essa interface define o formato dos pedidos com totais calculados
+export interface OrderWithTotals {
+  id: string;
+  status: OrderStatus;
+  table: number;
+  createdAt: Date;
+  day: string;
+  total: number;
+  products: {
+    id: string;
+    quantity: number;
+    subtotal: number;
+    product: {
+      id: string;
+      name: string;
+      description?: string | null;
+      imageUrl: string | null;
+      price: number;
+    };
+  }[];
+}
 
 export class PrismaOrdersRepository implements IOrdersRepository {
   async create(data: CreateOrderDTO): Promise<Order> {
     const order = await prisma.order.create({
       data: {
         table: data.table,
-        status: "WAITING",
+        status: OrderStatus.WAITING,
+        day: {
+          create: {
+            date: new Date(),
+            active: true,
+          },
+        },
         products: {
           create: data.products.map((product) => ({
             product: {
@@ -28,13 +60,15 @@ export class PrismaOrdersRepository implements IOrdersRepository {
 
     return order;
   }
-  async getAll(): Promise<Order[]> {
+
+  async getAll(): Promise<OrderWithTotals[]> {
     const orders = await prisma.order.findMany({
       select: {
         id: true,
         status: true,
         table: true,
         createdAt: true,
+        day: true,
         products: {
           select: {
             id: true,
@@ -43,6 +77,7 @@ export class PrismaOrdersRepository implements IOrdersRepository {
               select: {
                 id: true,
                 name: true,
+                description: true,
                 imageUrl: true,
                 price: true,
               },
@@ -55,27 +90,24 @@ export class PrismaOrdersRepository implements IOrdersRepository {
       },
     });
 
-    const ordersWithTotals = orders.map((order) => {
+    return orders.map((order) => {
       let total = 0;
-      let totalItems = 0;
 
       const productsWithSubtotal = order.products.map((item) => {
         const price = Number(item.product.price);
         const subtotal = price * item.quantity;
-
         total += subtotal;
-        totalItems += item.quantity;
 
         return {
           id: item.id,
           quantity: item.quantity,
-          subtotal: subtotal,
+          subtotal,
           product: {
             id: item.product.id,
             name: item.product.name,
-            description: item.product.description,
-            imageUrl: item.product.imageUrl,
-            price: item.product.price,
+            description: item.product.description ?? null,
+            imageUrl: item.product.imageUrl ?? null,
+            price: price,
           },
         };
       });
@@ -89,7 +121,16 @@ export class PrismaOrdersRepository implements IOrdersRepository {
         products: productsWithSubtotal,
       };
     });
+  }
+  async updateStatus(
+    orderId: string,
+    orderStatus: OrderStatus
+  ): Promise<Order> {
+    const order = await prisma.order.update({
+      where: { id: orderId },
+      data: { status: orderStatus },
+    });
 
-    return ordersWithTotals;
+    return order;
   }
 }

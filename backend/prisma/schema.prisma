@@ -71,12 +71,32 @@ enum OrderStatus {
   @@map("order_status")
 }
 
+model Day {
+  id     String   @id @default(uuid())
+  date   DateTime @default(now())
+  active Boolean  @default(true)
+
+  total_orders     Int?      @map("total_orders")
+  completed_orders Int?      @map("completed_orders")
+  total_revenue    Decimal?  @map("total_revenue") @db.Decimal(10, 2)
+  closed_at        DateTime? @map("closed_at")
+
+  created_at DateTime @default(now()) @map("created_at")
+
+  orders Order[]
+
+  @@map("days")
+}
+
 model Order {
   id        String          @id @default(uuid())
   table     Int
   status    OrderStatus     @default(WAITING)
   createdAt DateTime        @default(now()) @map("created_at")
   products  OrderProducts[]
+
+  dayId String @map("day_id")
+  day   Day    @relation(fields: [dayId], references: [id])
 
   @@map("orders")
 }
@@ -87,8 +107,8 @@ model OrderProducts {
   productId String @map("product_id")
   quantity  Int
 
-  Order   Order   @relation(fields: [orderId], references: [id])
-  Product Product @relation(fields: [productId], references: [id])
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
 
   @@map("order_products")
 }

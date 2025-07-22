@@ -6,7 +6,7 @@ export interface ICreateCategoryRequest {
 }
 
 export class CreateIngredientsUseCase {
-  constructor(private ingredientsRepository: IIngredientsRepository) {}
+  constructor(private readonly ingredientsRepository: IIngredientsRepository) {}
   async execute({ name, emoji }: ICreateCategoryRequest) {
     const ingredientAlreadyExists = await this.ingredientsRepository.findByName(
       name

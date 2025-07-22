@@ -8,6 +8,9 @@
 		"start": "node build/index.js",
 		"build": "tsup src --out-dir build"
 	},
+	"prisma": {
+		"seed": "ts-node prisma/seed.ts"
+	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
@@ -19,6 +22,7 @@
 		"fastify": "^5.1.0",
 		"jsonwebtoken": "^9.0.2",
 		"socket.io": "^4.8.1",
+		"ts-node": "^10.9.2",
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {

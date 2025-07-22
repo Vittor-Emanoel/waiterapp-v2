@@ -13,6 +13,7 @@ import { ListIngredientsController } from "./controllers/ingredients/ListIngredi
 import { UpdateIngredientController } from "./controllers/ingredients/UpdateIngredientController";
 import { CreateOrderController } from "./controllers/orders/CreateOrderController";
 import { ListOrdersController } from "./controllers/orders/ListOrdersController";
+import { UpdateOrderStatusController } from "./controllers/orders/UpdateOrderStatusController";
 import { CreateProductController } from "./controllers/products/CreateProductController";
 import { DeleteProductController } from "./controllers/products/DeleteProductController";
 import { ListProductsController } from "./controllers/products/ListProductsController";
@@ -20,7 +21,7 @@ import { UpdateProductController } from "./controllers/products/UpdateProductCon
 import { CreateUserController } from "./controllers/users/CreateUserController";
 import { ListUsersController } from "./controllers/users/ListUsersController";
 import { UpdateUserController } from "./controllers/users/UpdateUserController";
-import { AuthMiddleware } from "./middlewares/authMiddleware";
+import { AuthMiddleware } from "./middlewares/AuthMiddleware";
 
 export async function publicRoutes(fastify: FastifyInstance) {
   fastify.post("/signup", SignUpController.handler);
@@ -48,7 +49,7 @@ export async function privateRoutes(fastify: FastifyInstance) {
   fastify.put("/ingredients/:ingredientId", UpdateIngredientController.handler);
   fastify.delete(
     "/ingredients/:ingredientId",
-    DeleteIngredientController.handler,
+    DeleteIngredientController.handler
   );
   //#endregion
 
@@ -62,5 +63,6 @@ export async function privateRoutes(fastify: FastifyInstance) {
   //## region orders
   fastify.post("/orders", CreateOrderController.handler);
   fastify.get("/orders", ListOrdersController.handler);
+  fastify.patch("/orders/:orderId/status", UpdateOrderStatusController.handler);
   //#endregion
 }

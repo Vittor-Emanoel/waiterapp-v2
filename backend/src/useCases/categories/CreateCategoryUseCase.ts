@@ -7,12 +7,14 @@ export interface ICreateCategoryRequest {
 }
 
 export class CreateCategoryUseCase {
-  constructor(private categoryRepository: ICategoriesRepository) {}
+  constructor(private readonly categoryRepository: ICategoriesRepository) {}
   async execute({ name, emoji }: ICreateCategoryRequest) {
-    const categoryAlreadyExists = await this.categoryRepository.findByName(name);
+    const categoryAlreadyExists = await this.categoryRepository.findByName(
+      name
+    );
 
     if (categoryAlreadyExists) {
-      throw new CategoryNameAlreadyInUseError()
+      throw new CategoryNameAlreadyInUseError();
     }
 
     const category = await this.categoryRepository.create({

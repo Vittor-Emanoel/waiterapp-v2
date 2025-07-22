@@ -8,7 +8,7 @@ export interface IUpdateCategoryRequest {
 }
 
 export class UpdateCategoryUseCase {
-  constructor(private categoryRepository: ICategoriesRepository) {}
+  constructor(private readonly categoryRepository: ICategoriesRepository) {}
   async execute(categoryId: string, { name, emoji }: IUpdateCategoryRequest) {
     try {
       const category = await this.categoryRepository.update(categoryId, {

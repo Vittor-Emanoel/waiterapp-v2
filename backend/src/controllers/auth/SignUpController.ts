@@ -1,4 +1,3 @@
-
 import { makeRegisterUseCase } from "@/factories/auth/auth.factory";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";

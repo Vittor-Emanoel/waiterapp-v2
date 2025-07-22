@@ -6,7 +6,7 @@ import {
 import { Prisma } from "@prisma/client";
 
 export class CreateOrderUseCase {
-  constructor(private ordersRepository: IOrdersRepository) {}
+  constructor(private readonly ordersRepository: IOrdersRepository) {}
   async execute(data: CreateOrderDTO) {
     try {
       const order = await this.ordersRepository.create(data);
