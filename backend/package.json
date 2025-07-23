@@ -1,10 +1,10 @@
 {
-	"name": "BK",
+	"name": "waiterapp-v2",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start:dev": "tsx watch src/index.ts",
+		"dev": "tsx watch src/index.ts",
 		"start": "node build/index.js",
 		"build": "tsup src --out-dir build"
 	},

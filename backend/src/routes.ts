@@ -3,10 +3,9 @@ import { type FastifyInstance } from "fastify";
 import { SignInController } from "./controllers/auth/SignInController";
 import { SignUpController } from "./controllers/auth/SignUpController";
 import { CreateCategoryController } from "./controllers/categories/CreateCategoryController";
+import { DeleteCategoryController } from "./controllers/categories/DeleteCategoryController";
 import { ListCategoriesController } from "./controllers/categories/ListCategoriesController";
 import { UpdateCategoryController } from "./controllers/categories/UpdateCategoryController";
-
-import { DeleteCategoryController } from "./controllers/categories/DeleteCategoryController";
 import { CreateIngredientController } from "./controllers/ingredients/CreateIngredientController";
 import { DeleteIngredientController } from "./controllers/ingredients/DeleteIngredientController";
 import { ListIngredientsController } from "./controllers/ingredients/ListIngredientsController";
@@ -22,8 +21,8 @@ import { GetPresignedUrlController } from "./controllers/uploads/GetPresignedUrl
 import { CreateUserController } from "./controllers/users/CreateUserController";
 import { ListUsersController } from "./controllers/users/ListUsersController";
 import { UpdateUserController } from "./controllers/users/UpdateUserController";
-import { AuthMiddleware } from "./middlewares/AuthMiddleware";
 import { AuthorizationMiddleware } from "./middlewares/AuthorizationMiddleware";
+import { AuthMiddleware } from "./middlewares/authMiddleware";
 
 export async function publicRoutes(fastify: FastifyInstance) {
   fastify.post("/signup", SignUpController.handler);
@@ -57,7 +56,7 @@ export async function privateRoutes(fastify: FastifyInstance) {
   fastify.put("/ingredients/:ingredientId", UpdateIngredientController.handler);
   fastify.delete(
     "/ingredients/:ingredientId",
-    DeleteIngredientController.handler
+    DeleteIngredientController.handler,
   );
   //#endregion
 
