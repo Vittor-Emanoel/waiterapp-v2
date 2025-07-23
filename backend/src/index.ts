@@ -8,7 +8,7 @@ import http from "node:http";
 import { Server } from "socket.io";
 import { env } from "./config/env";
 import { errorHandler } from "./middlewares/ErrorHandler";
-import { privateRoutes, publicRoutes } from "./routes";
+import { adminRoutes, privateRoutes, publicRoutes } from "./routes";
 
 const fastify = Fastify();
 
@@ -25,6 +25,7 @@ fastify.register(FastifyJWT, {
 fastify.setErrorHandler(errorHandler);
 fastify.register(publicRoutes);
 fastify.register(privateRoutes);
+fastify.register(adminRoutes);
 
 fastify.listen({ port: 3000 }).then(() => {
   console.log("> Server is now listening on http://localhost:3000");

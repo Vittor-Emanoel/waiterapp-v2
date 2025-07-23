@@ -22,19 +22,25 @@ import { CreateUserController } from "./controllers/users/CreateUserController";
 import { ListUsersController } from "./controllers/users/ListUsersController";
 import { UpdateUserController } from "./controllers/users/UpdateUserController";
 import { AuthMiddleware } from "./middlewares/AuthMiddleware";
+import { AuthorizationMiddleware } from "./middlewares/AuthorizationMiddleware";
 
 export async function publicRoutes(fastify: FastifyInstance) {
   fastify.post("/signup", SignUpController.handler);
   fastify.post("/signin", SignInController.handler);
 }
 
-export async function privateRoutes(fastify: FastifyInstance) {
+export async function adminRoutes(fastify: FastifyInstance) {
   fastify.addHook("onRequest", AuthMiddleware);
+  fastify.addHook("onRequest", AuthorizationMiddleware);
 
   fastify.post("/users", CreateUserController.handler);
   fastify.get("/users", ListUsersController.handler);
   fastify.put("/users/:userId", UpdateUserController.handler);
   fastify.delete("/users/:userId", CreateUserController.handler);
+}
+
+export async function privateRoutes(fastify: FastifyInstance) {
+  fastify.addHook("onRequest", AuthMiddleware);
 
   //## region categories
   fastify.get("/categories", ListCategoriesController.handler);
