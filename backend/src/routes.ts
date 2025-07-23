@@ -18,6 +18,7 @@ import { CreateProductController } from "./controllers/products/CreateProductCon
 import { DeleteProductController } from "./controllers/products/DeleteProductController";
 import { ListProductsController } from "./controllers/products/ListProductsController";
 import { UpdateProductController } from "./controllers/products/UpdateProductController";
+import { GetPresignedUrlController } from "./controllers/uploads/GetPresignedUrl";
 import { CreateUserController } from "./controllers/users/CreateUserController";
 import { ListUsersController } from "./controllers/users/ListUsersController";
 import { UpdateUserController } from "./controllers/users/UpdateUserController";
@@ -42,6 +43,7 @@ export async function adminRoutes(fastify: FastifyInstance) {
 export async function privateRoutes(fastify: FastifyInstance) {
   fastify.addHook("onRequest", AuthMiddleware);
 
+  fastify.post("/uploads/presignedUrl", GetPresignedUrlController.handler);
   //## region categories
   fastify.get("/categories", ListCategoriesController.handler);
   fastify.post("/categories", CreateCategoryController.handler);
