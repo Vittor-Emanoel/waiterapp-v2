@@ -25,7 +25,37 @@ import { AuthorizationMiddleware } from "./middlewares/AuthorizationMiddleware";
 import { AuthMiddleware } from "./middlewares/authMiddleware";
 
 export async function publicRoutes(fastify: FastifyInstance) {
-  fastify.post("/signup", SignUpController.handler);
+  fastify.post(
+    "/signup",
+    {
+      schema: {
+        tags: ["Auth"],
+        summary: "Cadastrar ADMIN",
+        description: "Criar uma nova conta de usuário ADMIN ",
+        body: {
+          type: "object",
+          required: ["name", "email", "password"],
+          properties: {
+            name: { type: "string" },
+            email: {
+              type: "string",
+              format: "email",
+            },
+            password: { type: "string", minLength: 8 },
+          },
+        },
+        response: {
+          201: {
+            type: "object",
+            properties: {
+              accessToken: { type: "string" },
+            },
+          },
+        },
+      },
+    },
+    SignUpController.handler,
+  );
   fastify.post("/signin", SignInController.handler);
 }
 
