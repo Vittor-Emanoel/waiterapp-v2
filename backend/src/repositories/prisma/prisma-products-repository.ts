@@ -1,11 +1,31 @@
+import {
+  CreateProductDTO,
+  UpdateProductDTO,
+} from "@/dtos/products/products-dto";
 import { prisma } from "@/lib/prisma";
-import type { Prisma, Product } from "@prisma/client";
+import type { Product } from "@prisma/client";
 import type { IProductsRepository } from "../IProductsRepository";
 
 export class PrismaProductsRepository implements IProductsRepository {
-  async create(data: Prisma.ProductCreateInput) {
+  async create({
+    category,
+    description,
+    imageUrl,
+    ingredientIds,
+    name,
+    price,
+  }: CreateProductDTO) {
     const product = await prisma.product.create({
-      data,
+      data: {
+        name,
+        description,
+        price,
+        imageUrl,
+        categoryId: category,
+        ingredients: {
+          connect: ingredientIds.map((id) => ({ id })),
+        },
+      },
       include: {
         ingredients: true,
         category: true,
@@ -50,12 +70,31 @@ export class PrismaProductsRepository implements IProductsRepository {
     return products;
   }
 
-  async update(id: string, data: Prisma.ProductUpdateInput): Promise<Product> {
+  async update(
+    id: string,
+    {
+      category,
+      description,
+      imageUrl,
+      ingredientIds,
+      name,
+      price,
+    }: UpdateProductDTO,
+  ): Promise<Product> {
     const product = await prisma.product.update({
       where: {
-        id: id,
+        id,
       },
-      data,
+      data: {
+        name,
+        description,
+        price,
+        imageUrl,
+        categoryId: category,
+        ingredients: {
+          connect: ingredientIds?.map((id) => ({ id })),
+        },
+      },
       include: {
         ingredients: true,
         category: true,
@@ -73,5 +112,3 @@ export class PrismaProductsRepository implements IProductsRepository {
     });
   }
 }
-
-

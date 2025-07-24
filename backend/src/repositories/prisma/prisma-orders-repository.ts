@@ -1,36 +1,7 @@
+import { CreateOrderDTO, OrderDetailsDTO } from "@/dtos/orders/orders-dto";
 import { prisma } from "@/lib/prisma";
 import { Order, OrderStatus } from "@prisma/client";
 import { IOrdersRepository } from "../IOrdersRepository";
-
-export interface CreateOrderDTO {
-  table: number;
-  products: {
-    productId: string;
-    quantity: number;
-  }[];
-}
-
-// Essa interface define o formato dos pedidos com totais calculados
-export interface OrderWithTotals {
-  id: string;
-  status: OrderStatus;
-  table: number;
-  createdAt: Date;
-  day: string;
-  total: number;
-  products: {
-    id: string;
-    quantity: number;
-    subtotal: number;
-    product: {
-      id: string;
-      name: string;
-      description?: string | null;
-      imageUrl: string | null;
-      price: number;
-    };
-  }[];
-}
 
 export class PrismaOrdersRepository implements IOrdersRepository {
   async create(data: CreateOrderDTO): Promise<Order> {
@@ -61,14 +32,13 @@ export class PrismaOrdersRepository implements IOrdersRepository {
     return order;
   }
 
-  async getAll(): Promise<OrderWithTotals[]> {
+  async getAll(): Promise<OrderDetailsDTO[]> {
     const orders = await prisma.order.findMany({
       select: {
         id: true,
         status: true,
         table: true,
         createdAt: true,
-        day: true,
         products: {
           select: {
             id: true,
@@ -124,7 +94,7 @@ export class PrismaOrdersRepository implements IOrdersRepository {
   }
   async updateStatus(
     orderId: string,
-    orderStatus: OrderStatus
+    orderStatus: OrderStatus,
   ): Promise<Order> {
     const order = await prisma.order.update({
       where: { id: orderId },

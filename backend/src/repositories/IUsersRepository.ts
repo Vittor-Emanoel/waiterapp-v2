@@ -1,10 +1,15 @@
-import type { Prisma, User } from "@prisma/client";
+import {
+  CreateUserDTO,
+  UpdateUserDTO,
+  UserResponseDTO,
+} from "@/dtos/users/users-dto";
+import type { User } from "@prisma/client";
 
 export interface IUsersRepository {
-  create(data: Prisma.UserCreateInput): Promise<User>;
-  update(userId: string, data: Prisma.UserUpdateInput): Promise<void>;
+  create(data: CreateUserDTO): Promise<User>;
+  getAll(): Promise<UserResponseDTO[]>;
+  update(userId: string, data: UpdateUserDTO): Promise<void>;
+  delete(userId: string): Promise<void>;
   findByEmail(email: string): Promise<User | null>;
-  findById(id: string): Promise<User | null>;
-  delete(id: string): Promise<void>;
-  getAll(): Promise<Omit<User, "password">[]>;
+  findById(userId: string): Promise<User | null>;
 }

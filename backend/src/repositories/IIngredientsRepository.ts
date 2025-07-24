@@ -1,13 +1,14 @@
-import type { Ingredient, Prisma } from "@prisma/client";
+import {
+  CreateIngredientDTO,
+  UpdateIngredientDTO,
+} from "@/dtos/ingredients/ingredients-dto";
+import type { Ingredient } from "@prisma/client";
 
 export interface IIngredientsRepository {
-  create(data: Prisma.IngredientCreateInput): Promise<Ingredient>;
-  findByName(name: string): Promise<Ingredient | null>;
+  create(data: CreateIngredientDTO): Promise<Ingredient>;
   getAll(): Promise<Ingredient[]>;
-  update(
-    ingredientId: string,
-    data: Prisma.IngredientUpdateInput,
-  ): Promise<void>;
+  update(ingredientId: string, data: UpdateIngredientDTO): Promise<void>;
   delete(ingredientId: string): Promise<void>;
-  findByIds(ids: string[]): Promise<Ingredient[]>;
+  findByName(name: string): Promise<Ingredient | null>;
+  findByIds(ingredientIds: string[]): Promise<Ingredient[]>;
 }

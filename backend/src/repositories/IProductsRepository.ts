@@ -1,10 +1,14 @@
-import type { Prisma, Product } from "@prisma/client";
+import {
+  CreateProductDTO,
+  UpdateProductDTO,
+} from "@/dtos/products/products-dto";
+import type { Product } from "@prisma/client";
 
 export interface IProductsRepository {
-  create(data: Prisma.ProductCreateInput): Promise<Product>;
+  create(data: CreateProductDTO): Promise<Product>;
+  getAll(): Promise<Product[]>;
+  update(productId: string, data: UpdateProductDTO): Promise<Product>;
+  delete(productId: string): Promise<void>;
   findByName(name: string): Promise<Product | null>;
   findById(id: string): Promise<Product | null>;
-  getAll(): Promise<Product[]>;
-  update(id: string, data: Prisma.ProductUpdateInput): Promise<Product>;
-  delete(id: string): Promise<void>;
 }

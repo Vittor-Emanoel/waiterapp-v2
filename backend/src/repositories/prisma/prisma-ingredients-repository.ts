@@ -1,9 +1,11 @@
+import { CreateCategoryDTO } from "@/dtos/categories/categories-dto";
+import { UpdateIngredientDTO } from "@/dtos/ingredients/ingredients-dto";
 import { prisma } from "@/lib/prisma";
-import type { Ingredient, Prisma } from "@prisma/client";
+import type { Ingredient } from "@prisma/client";
 import type { IIngredientsRepository } from "../IIngredientsRepository";
 
 export class PrismaIngredientsRepository implements IIngredientsRepository {
-  async create(data: Prisma.IngredientCreateInput) {
+  async create(data: CreateCategoryDTO) {
     const ingredient = await prisma.ingredient.create({
       data,
     });
@@ -11,7 +13,7 @@ export class PrismaIngredientsRepository implements IIngredientsRepository {
     return ingredient;
   }
 
-  async update(ingredientId: string, data: Prisma.IngredientCreateInput) {
+  async update(ingredientId: string, data: UpdateIngredientDTO) {
     await prisma.ingredient.update({
       where: {
         id: ingredientId,
@@ -50,11 +52,11 @@ export class PrismaIngredientsRepository implements IIngredientsRepository {
 
     return ingredients;
   }
-  async findByIds(ids: string[]): Promise<Ingredient[]> {
+  async findByIds(ingredientIds: string[]): Promise<Ingredient[]> {
     const ingredients = await prisma.ingredient.findMany({
       where: {
         id: {
-          in: ids,
+          in: ingredientIds,
         },
       },
     });

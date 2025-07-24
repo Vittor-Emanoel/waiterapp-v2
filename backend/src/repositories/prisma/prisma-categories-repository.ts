@@ -1,9 +1,13 @@
+import {
+  CreateCategoryDTO,
+  UpdateCategoryDTO,
+} from "@/dtos/categories/categories-dto";
 import { prisma } from "@/lib/prisma";
-import type { Category, Prisma } from "@prisma/client";
+import type { Category } from "@prisma/client";
 import type { ICategoriesRepository } from "../ICategoriesRepository";
 
 export class PrismaCategoriesRepository implements ICategoriesRepository {
-  async create(data: Prisma.CategoryCreateInput) {
+  async create(data: CreateCategoryDTO) {
     const category = await prisma.category.create({
       data,
     });
@@ -11,7 +15,7 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
     return category;
   }
 
-  async update(categoryId: string, data: Prisma.CategoryUpdateInput) {
+  async update(categoryId: string, data: UpdateCategoryDTO) {
     await prisma.category.update({
       where: {
         id: categoryId,
@@ -51,7 +55,7 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
   async findById(id: string): Promise<Category | null> {
     const category = await prisma.category.findUnique({
       where: {
-        id: id,
+        id,
       },
     });
 

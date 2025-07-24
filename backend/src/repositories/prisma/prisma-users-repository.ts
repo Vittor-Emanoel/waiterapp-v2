@@ -1,9 +1,14 @@
+import {
+  CreateUserDTO,
+  UpdateUserDTO,
+  UserResponseDTO,
+} from "@/dtos/users/users-dto";
 import { prisma } from "@/lib/prisma";
-import type { Prisma, User } from "@prisma/client";
+import type { User } from "@prisma/client";
 import type { IUsersRepository } from "../IUsersRepository";
 
 export class PrismaUsersRepository implements IUsersRepository {
-  async create(data: Prisma.UserCreateInput) {
+  async create(data: CreateUserDTO) {
     const user = await prisma.user.create({
       data,
     });
@@ -21,23 +26,23 @@ export class PrismaUsersRepository implements IUsersRepository {
     return user;
   }
 
-  async findById(id: string): Promise<User | null> {
+  async findById(userId: string): Promise<User | null> {
     const user = await prisma.user.findUnique({
       where: {
-        id,
+        id: userId,
       },
     });
 
     return user;
   }
-  async update(userId: string, data: Prisma.UserUpdateInput): Promise<void> {
+  async update(userId: string, data: UpdateUserDTO): Promise<void> {
     await prisma.user.update({
       where: { id: userId },
       data,
     });
   }
 
-  async getAll(): Promise<Omit<User, "password">[]> {
+  async getAll(): Promise<UserResponseDTO[]> {
     const user = await prisma.user.findMany({
       select: {
         id: true,
@@ -49,9 +54,9 @@ export class PrismaUsersRepository implements IUsersRepository {
     });
     return user;
   }
-  async delete(id: string): Promise<void> {
+  async delete(userId: string): Promise<void> {
     await prisma.user.delete({
-      where: { id },
+      where: { id: userId },
     });
   }
 }
