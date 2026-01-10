@@ -6,7 +6,7 @@ CREATE TYPE "order_status" AS ENUM ('WAITING', 'IN_PRODUCTION', 'DONE');
 
 -- CreateTable
 CREATE TABLE "users" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
@@ -84,6 +84,16 @@ CREATE TABLE "order_products" (
 );
 
 -- CreateTable
+CREATE TABLE "refresh_tokens" (
+    "id" UUID NOT NULL,
+    "userId" UUID NOT NULL,
+    "issuedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "refresh_tokens_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "_IngredientToProduct" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
@@ -115,6 +125,9 @@ ALTER TABLE "order_products" ADD CONSTRAINT "order_products_order_id_fkey" FOREI
 
 -- AddForeignKey
 ALTER TABLE "order_products" ADD CONSTRAINT "order_products_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "refresh_tokens" ADD CONSTRAINT "refresh_tokens_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_IngredientToProduct" ADD CONSTRAINT "_IngredientToProduct_A_fkey" FOREIGN KEY ("A") REFERENCES "ingredients"("id") ON DELETE CASCADE ON UPDATE CASCADE;

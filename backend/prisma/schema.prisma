@@ -15,12 +15,13 @@ enum UserType {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  name       String
-  email      String   @unique
-  password   String
-  type       UserType @default(WAITER)
-  created_at DateTime @default(now())
+  id             String         @id @default(uuid()) @db.Uuid
+  name           String
+  email          String         @unique
+  password       String
+  type           UserType       @default(WAITER)
+  created_at     DateTime       @default(now())
+  refresh_tokens RefreshToken[]
 
   @@map("users")
 }
@@ -111,4 +112,16 @@ model OrderProducts {
   product Product @relation(fields: [productId], references: [id])
 
   @@map("order_products")
+}
+
+//implementar um rate limit
+model RefreshToken {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  issuedAt  DateTime @default(now())
+  expiresAt DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
 }
