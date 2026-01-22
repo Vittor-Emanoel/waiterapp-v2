@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Eyes } from "../../components/icons/eyes";
 import { Logo } from "../../components/icons/logo";
+import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 
 export const Login = () => {
@@ -26,6 +27,10 @@ export const Login = () => {
               <Eyes />
             </Input.Suffix>
           </Input.Root>
+
+          <Button variant="primary" className="w-full">
+            Fazer Login
+          </Button>
         </form>
       </div>
     </div>
